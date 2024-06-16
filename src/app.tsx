@@ -6,12 +6,12 @@ import {
   AuthContext,
   AuthProvider,
 } from "./@core/presentation/contexts/auth.context";
-import CreatePostPage from "./create-post/presentation/create-post.page";
-import FeedPage from "./feed/presentation/feed.page";
-import PostPage from "./post/presentation/post.page";
-import SignInPage from "./sign-in/presentation/sign-in.page";
-import SignUpPage from "./sign-up/presentation/sign-up.page";
-import UserFeedPage from "./user-feed/presentation/user-feed.page";
+import CreatePostPage from "./pages/create-post/create-post.page";
+import FeedPage from "./pages/feed/feed.page";
+import PostPage from "./pages/post/post.page";
+import SignInPage from "./pages/sign-in/sign-in.page";
+import SignUpPage from "./pages/sign-up/sign-up.page";
+import UserFeedPage from "./pages/user-feed/user-feed.page";
 
 export const App: React.FC = () => (
   <BrowserRouter>
@@ -35,7 +35,7 @@ export const App: React.FC = () => (
             )}
           />
           <Route path="/" element={<FeedPage />} />
-          <Route path="/:id" element={<PostPage />} />
+          <Route path="/posts/:id" element={<PostPage />} />
           <Route path="/profile/:id" element={<UserFeedPage />} />
 
           <Route
@@ -63,7 +63,6 @@ export const App: React.FC = () => (
 
 const ProtectedRoute: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { userInfo } = useContext(AuthContext);
-  console.log(userInfo.user);
 
   if (!userInfo.user) {
     return <Navigate to="/signin" />;

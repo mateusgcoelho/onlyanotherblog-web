@@ -3,14 +3,14 @@ import { FiLogOut } from "react-icons/fi";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../../@core/presentation/contexts/auth.context";
 
-export default function NavBar() {
+export default function NavBarComponent() {
   const {
     userInfo: { user },
     logOut,
   } = useContext(AuthContext);
 
   return (
-    <header className="py-4 m-auto max-w-screen-xl flex w-full items-center gap-x-10 border border-slate-800 px-10 shadow-sm shadow-blue-500/10 rounded-md">
+    <header className="bg-slate-950/85 z-10 backdrop-blur-[150px] py-4 m-auto max-w-screen-xl flex w-full items-center gap-x-10 border border-slate-800 px-10 shadow-sm shadow-blue-500/10 rounded-md">
       <h1 className="text-purple-300 font-bold text-2xl">
         <span className="text-purple-400">Only</span>Another
         <span className="text-purple-500">Blog</span>!

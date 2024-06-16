@@ -2,8 +2,8 @@ import React, { createContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
-import { User } from "../../../users/models/user.model";
-import { UserFactory } from "../../../users/user.factory";
+import { UserFactory } from "../../../application/user.factory";
+import { User } from "../../../domain/models/user.model";
 
 interface AuthCredentials {
   email: string;

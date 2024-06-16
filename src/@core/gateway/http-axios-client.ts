@@ -36,7 +36,7 @@ export class HttpAxiosClient implements IHttpClient {
   get(
     url: string,
     options: {
-      queryParams?: Map<string, any>;
+      queryParams?: any;
     }
   ): Promise<any> {
     const token = this.cookies.get("@onlyanotherblog:token");
