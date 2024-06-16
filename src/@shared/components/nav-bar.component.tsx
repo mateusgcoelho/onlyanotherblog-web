@@ -1,12 +1,13 @@
 import { useContext } from "react";
+import { FiLogOut } from "react-icons/fi";
 import { NavLink } from "react-router-dom";
-import {
-  AuthContext,
-  AuthContextData,
-} from "../../@core/presentation/contexts/auth.context";
+import { AuthContext } from "../../@core/presentation/contexts/auth.context";
 
 export default function NavBar() {
-  const { user } = useContext<AuthContextData>(AuthContext);
+  const {
+    userInfo: { user },
+    logOut,
+  } = useContext(AuthContext);
 
   return (
     <header className="py-4 m-auto max-w-screen-xl flex w-full items-center gap-x-10 border border-slate-800 px-10 shadow-sm shadow-blue-500/10 rounded-md">
@@ -27,6 +28,19 @@ export default function NavBar() {
           >
             <p className="leading-normal">Recentes</p>
           </NavLink>
+
+          {user && (
+            <NavLink
+              to="/create-post"
+              className={({ isActive }) => {
+                return isActive
+                  ? "text-purple-500 underline"
+                  : "text-white hover:underline";
+              }}
+            >
+              <p className="leading-normal">Nova publicação</p>
+            </NavLink>
+          )}
         </div>
 
         <div className="flex items-center gap-x-4">
@@ -55,7 +69,27 @@ export default function NavBar() {
             </>
           )}
 
-          {user && <p className="text-white">{user.username}</p>}
+          {user && (
+            <div className="flex items-center gap-x-4">
+              <NavLink
+                to="/signup"
+                className={({ isActive }) => {
+                  return isActive
+                    ? "text-purple-500 underline"
+                    : "text-white hover:underline";
+                }}
+              >
+                <p className="leading-normal">{user?.username ?? "..."}</p>
+              </NavLink>
+
+              <button
+                onClick={() => logOut()}
+                className="text-red-500 text-xl hover:text-red-700 transition-all"
+              >
+                <FiLogOut />
+              </button>
+            </div>
+          )}
         </div>
       </nav>
     </header>

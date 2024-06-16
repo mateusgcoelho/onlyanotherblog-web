@@ -18,6 +18,7 @@ type UserToSignInSchema = z.infer<typeof userToSignInSchema>;
 
 export default function SignInPage() {
   const { signIn } = useContext(AuthContext);
+
   const {
     register,
     handleSubmit,

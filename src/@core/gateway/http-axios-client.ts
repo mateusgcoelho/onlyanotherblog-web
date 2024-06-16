@@ -1,11 +1,18 @@
-import axios from "axios";
+import axios, { AxiosInstance, RawAxiosRequestHeaders } from "axios";
+import Cookies from "universal-cookie";
 import { IHttpClient } from "./http-client.interface";
 
-const axiosClient = axios.create({
-  baseURL: "http://localhost:3000",
-});
-
 export class HttpAxiosClient implements IHttpClient {
+  private readonly axiosClient!: AxiosInstance;
+  private readonly cookies!: Cookies;
+
+  constructor() {
+    this.axiosClient = axios.create({
+      baseURL: "http://localhost:3000",
+    });
+    this.cookies = new Cookies(null, { path: "/" });
+  }
+
   post(
     url: string,
     options: {
@@ -13,8 +20,35 @@ export class HttpAxiosClient implements IHttpClient {
       queryParams?: Map<string, any>;
     }
   ): Promise<any> {
-    return axiosClient.post(url, options.data, {
-      params: options.queryParams,
+    const token = this.cookies.get("@onlyanotherblog:token");
+    let headers: RawAxiosRequestHeaders = {};
+
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+
+    return this.axiosClient.post(url, options.data, {
+      params: options?.queryParams ?? {},
+      headers: headers,
+    });
+  }
+
+  get(
+    url: string,
+    options: {
+      queryParams?: Map<string, any>;
+    }
+  ): Promise<any> {
+    const token = this.cookies.get("@onlyanotherblog:token");
+    let headers: RawAxiosRequestHeaders = {};
+
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+
+    return this.axiosClient.get(url, {
+      params: options?.queryParams ?? {},
+      headers: headers,
     });
   }
 }

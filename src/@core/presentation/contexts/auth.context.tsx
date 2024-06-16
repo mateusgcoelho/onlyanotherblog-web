@@ -1,6 +1,7 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { SignInUseCase } from "../../../users/application/use-cases/sign-in.use-case";
+import { useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
 import { User } from "../../../users/models/user.model";
 import { UserFactory } from "../../../users/user.factory";
 
@@ -9,23 +10,39 @@ interface AuthCredentials {
   password: string;
 }
 
-export interface AuthContextData {
+interface UserInfoContext {
   user: User | null;
   token: string;
+}
+
+export interface AuthContextData {
+  userInfo: UserInfoContext;
   signIn(props: AuthCredentials): Promise<void>;
+  logOut(): void;
 }
 
 export const AuthContext = createContext<AuthContextData>(
   {} as AuthContextData
 );
 
-const signInUseCase: SignInUseCase = UserFactory.factorySignInUseCase();
+const signInUseCase = UserFactory.factorySignInUseCase();
+const getUserInfoUseCase = UserFactory.factoryGetUserInfoUseCase();
 
 export const AuthProvider: React.FunctionComponent<React.PropsWithChildren> = ({
   children,
 }: React.PropsWithChildren) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string>("");
+  const navigate = useNavigate();
+
+  const cookies = new Cookies(null, { path: "/" });
+
+  const [userInfo, setUserInfo] = useState<UserInfoContext>({
+    token: "",
+    user: null,
+  });
+
+  useEffect(() => {
+    revalidateToken();
+  }, []);
 
   async function signIn(props: AuthCredentials): Promise<void> {
     const response = await signInUseCase.execute(props);
@@ -37,15 +54,56 @@ export const AuthProvider: React.FunctionComponent<React.PropsWithChildren> = ({
       return;
     }
 
+    cookies.set("@onlyanotherblog:token", response.value.token, {
+      expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+    });
+
+    setUserInfo({
+      user: response.value.user,
+      token: response.value.token,
+    });
+
+    navigate("/");
     toast.success("Autenticado com sucesso!", {
       position: "bottom-right",
     });
-    setUser(response.value.user);
-    setToken(response.value.token);
+  }
+
+  async function revalidateToken(): Promise<void> {
+    const token = cookies.get("@onlyanotherblog:token");
+
+    if (!token) {
+      return;
+    }
+
+    const response = await getUserInfoUseCase.execute();
+
+    if (response.isLeft()) {
+      cookies.remove("@onlyanotherblog:token");
+      navigate("/signin");
+      toast.error("Por favor valide seu usuário novamente.", {
+        position: "bottom-right",
+      });
+      return;
+    }
+
+    setUserInfo({
+      user: response.value,
+      token: token,
+    });
+  }
+
+  function logOut(): void {
+    cookies.remove("@onlyanotherblog:token");
+    setUserInfo({
+      user: null,
+      token: "",
+    });
+    navigate("/");
   }
 
   return (
-    <AuthContext.Provider value={{ user: user, token: token, signIn }}>
+    <AuthContext.Provider value={{ userInfo, signIn, logOut }}>
       {children}
     </AuthContext.Provider>
   );

@@ -8,6 +8,13 @@ import { IUserRepository } from "../../repository/user.repository";
 export class UserRepository implements IUserRepository {
   constructor(private readonly httpClient: IHttpClient) {}
 
+  async getUserInfo(): Promise<User> {
+    const response = await this.httpClient.get("/users/me");
+    console.log(response);
+
+    return User.fromJson(response.data["data"]);
+  }
+
   async createUser(data: CreateUserDto): Promise<User> {
     const response = await this.httpClient.post("/users", {
       data,

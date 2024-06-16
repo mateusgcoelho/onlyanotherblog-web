@@ -5,5 +5,6 @@ import { User } from "../models/user.model";
 
 export interface IUserRepository {
   createUser(data: CreateUserDto): Promise<User>;
+  getUserInfo(): Promise<User>;
   signIn(data: SignInDto): Promise<ResponseSignInDto>;
 }

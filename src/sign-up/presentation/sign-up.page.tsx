@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { z } from "zod";
 import NavBar from "../../@shared/components/nav-bar.component";
 import { UserFactory } from "../../users/user.factory";
@@ -53,14 +53,6 @@ export default function SignUpPage() {
     <>
       <div className="bg-slate-950 h-screen w-screen flex flex-col overflow-y-auto pt-6 pb-4 gap-y-4">
         <NavBar />
-        <Toaster
-          containerStyle={{
-            position: "absolute",
-            padding: 0,
-            margin: 0,
-            overflow: "hidden",
-          }}
-        />
 
         <div className="text-white w-full flex flex-col items-center flex-1 gap-y-6 py-8 px-10 max-w-screen-xl m-auto border border-slate-800 rounded-md shadow-2xl shadow-blue-500/20">
           <section className="flex-1 flex flex-col items-start justify-center gap-y-4 max-w-sm w-full h-full m-auto">
