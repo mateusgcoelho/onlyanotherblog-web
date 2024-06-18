@@ -120,9 +120,9 @@ export function MyMarkdownPreview({ source }: { source: string }) {
   const options = { code: CodeBlock, pre: Pre };
 
   return (
-    <article className="w-full p-6 flex-wrap flex overflow-y-auto">
+    <article className="w-full flex-wrap flex overflow-y-auto">
       <Markdown
-        className="prose prose-invert flex-wrap text-wrap w-full flex-1 break-words"
+        className="prose prose-invert text-wrap w-full flex-1 break-words"
         components={options}
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[

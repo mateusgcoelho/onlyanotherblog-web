@@ -60,7 +60,11 @@ export default function PostPage() {
       </div>
 
       {isLoading && <LoadingComponent />}
-      <MyMarkdownPreview source={post?.content ?? ""} />
+      {!isLoading && (
+        <div className="w-full">
+          <MyMarkdownPreview source={post?.content ?? ""} />
+        </div>
+      )}
     </ContainterComponent>
   );
 }
