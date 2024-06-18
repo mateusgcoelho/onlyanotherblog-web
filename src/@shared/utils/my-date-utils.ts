@@ -4,12 +4,16 @@ export function getFormatedTime(milisegundos: number) {
 
   const tempoFormatado = ["Há "];
 
+  if (minutos <= 0) {
+    return "Postado recentemente.";
+  }
+
   if (horas > 0) {
-    tempoFormatado.push(`${horas} horas`);
+    tempoFormatado.push(`${horas} hora(s)`);
   }
 
   if (minutos > 0) {
-    tempoFormatado.push(`${minutos} minutos`);
+    tempoFormatado.push(`${minutos} minuto(s)`);
   }
 
   return tempoFormatado.join(" ");
