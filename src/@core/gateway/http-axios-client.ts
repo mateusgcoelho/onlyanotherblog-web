@@ -8,7 +8,7 @@ export class HttpAxiosClient implements IHttpClient {
 
   constructor() {
     this.axiosClient = axios.create({
-      baseURL: "https://onlyanotherblog-api-production.up.railway.app",
+      baseURL: "http://192.168.1.222:4040",
     });
     this.cookies = new Cookies(null, { path: "/" });
   }

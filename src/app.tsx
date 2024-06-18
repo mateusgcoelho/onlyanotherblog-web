@@ -9,6 +9,7 @@ import {
 import CreatePostPage from "./pages/create-post/create-post.page";
 import FeedPage from "./pages/feed/feed.page";
 import PostPage from "./pages/post/post.page";
+import ProfilePage from "./pages/profile/profile.page";
 import SignInPage from "./pages/sign-in/sign-in.page";
 import SignUpPage from "./pages/sign-up/sign-up.page";
 import UserFeedPage from "./pages/user-feed/user-feed.page";
@@ -35,6 +36,7 @@ export const App: React.FC = () => (
             )}
           />
           <Route path="/" element={<FeedPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/:username" element={<UserFeedPage />} />
           <Route path="/posts/:id" element={<PostPage />} />
 

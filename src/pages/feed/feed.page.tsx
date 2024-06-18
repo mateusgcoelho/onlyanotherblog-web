@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { CardPostComponent } from "../../@shared/components/card-post.component";
 import { ContainterComponent } from "../../@shared/components/container.component";
 import { LoadingComponent } from "../../@shared/components/loading.component";
-import { fakeDelay } from "../../@shared/utils/fake-delay";
 import { PostFactory } from "../../application/post.factory";
 import { Post } from "../../domain/models/post.model";
 
@@ -20,7 +19,6 @@ export default function FeedPage() {
   async function getPosts() {
     try {
       setIsLoading(true);
-      await fakeDelay(200);
       const response = await getPostsUseCase.execute();
       if (response.isLeft()) {
         toast.error(response.value.message, {
@@ -50,20 +48,7 @@ export default function FeedPage() {
             </div>
           )}
           {posts.map((post, i) => (
-            <Link
-              key={i}
-              className="border w-full rounded-md p-4 border-slate-800 cursor-pointer hover:bg-slate-950/40 transition-all"
-              to={`/posts/${post.id}`}
-            >
-              <h1 className="text-sm font-semibold">
-                {i + 1}. {post.title}
-              </h1>
-
-              <div className="text-xs text-slate-600 flex gap-x-2">
-                <p>{post.username}</p>
-                <p>{post.getFormattedDiffTime}</p>
-              </div>
-            </Link>
+            <CardPostComponent index={i} post={post} />
           ))}
         </div>
       </ContainterComponent>

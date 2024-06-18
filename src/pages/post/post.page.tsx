@@ -3,7 +3,6 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { ContainterComponent } from "../../@shared/components/container.component";
 import { MyMarkdownPreview } from "../../@shared/components/editor-markdown.component";
 import { LoadingComponent } from "../../@shared/components/loading.component";
-import { fakeDelay } from "../../@shared/utils/fake-delay";
 import { PostFactory } from "../../application/post.factory";
 import { Post } from "../../domain/models/post.model";
 
@@ -21,7 +20,6 @@ export default function PostPage() {
 
   async function getPostInfo() {
     setIsLoading(true);
-    await fakeDelay(200);
     const response = await getPostUseCase.execute(params.id!);
 
     if (response.isLeft()) {
@@ -47,7 +45,9 @@ export default function PostPage() {
           Voltar
         </Link>
 
-        <h1 className="text-2xl font-bold">{post?.title}</h1>
+        <h1 className="text-2xl font-bold break-words line-clamp-2">
+          {post?.title}
+        </h1>
         <p className="text-sm text-slate-500">
           <Link
             to={`/${post?.username}`}

@@ -1,19 +1,18 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useParams } from "react-router-dom";
+import { AuthContext } from "../../@core/presentation/contexts/auth.context";
 import { CardPostComponent } from "../../@shared/components/card-post.component";
 import { ContainterComponent } from "../../@shared/components/container.component";
 import { LoadingComponent } from "../../@shared/components/loading.component";
 import { PostFactory } from "../../application/post.factory";
 import { Post } from "../../domain/models/post.model";
 
-export default function UserFeedPage() {
-  const getPostsByUsernameUseCase =
-    PostFactory.factoryGetPostsByUsernameUseCase();
+export default function ProfilePage() {
+  const getPostsOfUserUseCase = PostFactory.factoryGetPostsOfUserUseCase();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [posts, setPosts] = useState<Post[]>([]);
-  const params = useParams();
+  const { userInfo } = useContext(AuthContext);
 
   useEffect(() => {
     getPosts();
@@ -22,9 +21,7 @@ export default function UserFeedPage() {
   async function getPosts() {
     try {
       setIsLoading(true);
-      const response = await getPostsByUsernameUseCase.execute(
-        params.username!
-      );
+      const response = await getPostsOfUserUseCase.execute();
       if (response.isLeft()) {
         toast.error(response.value.message, {
           position: "bottom-right",
@@ -41,7 +38,7 @@ export default function UserFeedPage() {
   return (
     <ContainterComponent>
       <div className="flex flex-col border-b-[1px] border-b-slate-800">
-        <h1 className="text-2xl font-bold">{params.username}</h1>
+        <h1 className="text-2xl font-bold">{userInfo.user?.username ?? "-"}</h1>
 
         <div className="w-full mt-4">
           <button className="py-2 text-sm border-b-[1px] text-purple-300 border-b-purple-500">

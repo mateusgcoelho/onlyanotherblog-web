@@ -87,6 +87,7 @@ export const AuthProvider: React.FunctionComponent<React.PropsWithChildren> = ({
       return;
     }
 
+    console.log(response.value);
     setUserInfo({
       user: response.value,
       token: token,

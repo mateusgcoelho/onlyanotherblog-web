@@ -4,14 +4,14 @@ import { DefaultError } from "../../@core/error/default.error";
 import { Post } from "../../domain/models/post.model";
 import { IPostRepository } from "../../domain/repository/post.repository";
 
-export class GetPostsOfUserUseCase
+export class GetPostsByUsernameUseCase
   implements IUseCaseExecutor<Promise<Either<DefaultError, Post[]>>, string>
 {
   constructor(private readonly postRepository: IPostRepository) {}
 
-  async execute(): Promise<Either<DefaultError, Post[]>> {
+  async execute(username: string): Promise<Either<DefaultError, Post[]>> {
     try {
-      const posts = await this.postRepository.getPostsOfUser();
+      const posts = await this.postRepository.getPostsByUsername(username);
       return right(posts);
     } catch {
       return left(

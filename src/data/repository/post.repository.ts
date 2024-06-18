@@ -6,8 +6,20 @@ import { IPostRepository } from "../../domain/repository/post.repository";
 export class PostRepository implements IPostRepository {
   constructor(private readonly httpClient: IHttpClient) {}
 
-  async getPostsOfUser(userId: string): Promise<Post[]> {
-    const response = await this.httpClient.get(`/posts/users/${userId}`);
+  async getPostsByUsername(username: string): Promise<Post[]> {
+    const response = await this.httpClient.get(`/posts/users/${username}`);
+
+    let posts: Post[] = [];
+
+    for (var item of response["data"]["data"]) {
+      posts.push(Post.fromGetPostsJson(item));
+    }
+
+    return posts;
+  }
+
+  async getPostsOfUser(): Promise<Post[]> {
+    const response = await this.httpClient.get(`/posts/me`);
 
     let posts: Post[] = [];
 

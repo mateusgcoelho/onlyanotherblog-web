@@ -1,9 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import { z } from "zod";
+import { AuthContext } from "../../@core/presentation/contexts/auth.context";
 import { ButtonComponent } from "../../@shared/components/button.component";
 import { ContainterComponent } from "../../@shared/components/container.component";
 import { UserFactory } from "../../application/user.factory";
@@ -28,7 +28,7 @@ type UserToCreateSchema = z.infer<typeof userToCreateSchema>;
 
 export default function SignUpPage() {
   const createUserUseCase = UserFactory.factoryCreateUserUseCase();
-  const navigate = useNavigate();
+  const { signIn } = useContext(AuthContext);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -52,9 +52,9 @@ export default function SignUpPage() {
         return;
       }
 
-      navigate("/signin");
-      toast.success("Usuário criado com sucesso!", {
-        position: "bottom-right",
+      await signIn({
+        email: data.email,
+        password: data.password,
       });
     } finally {
       setIsLoading(false);
