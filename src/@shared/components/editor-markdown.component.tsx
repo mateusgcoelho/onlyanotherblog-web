@@ -26,8 +26,8 @@ export const EditorMarkdownComponent = ({
   const [showMarkdownViewer, setShowMarkdownViewer] = useState(false);
 
   return (
-    <div className="flex-1 w-full flex h-96">
-      <section className="flex flex-col flex-1 h-96">
+    <div className="flex-1 w-full flex h-96 gap-x-4">
+      <section className="flex flex-col min-w-[50%] flex-1 h-96">
         <Header
           feedElement={feedElement}
           toggleShowHeader={() => setShowMarkdownViewer(!showMarkdownViewer)}
@@ -42,9 +42,11 @@ export const EditorMarkdownComponent = ({
         <p className="text-red-500 text-xs mt-1">{errorTextArea ?? ""}</p>
       </section>
 
-      <div className="fixed border-r-2 border-r-dashed" />
-
-      {showMarkdownViewer && <MyMarkdownPreview source={source} />}
+      {showMarkdownViewer && (
+        <div className="h-96 overflow-y-auto">
+          <MyMarkdownPreview source={source} />
+        </div>
+      )}
     </div>
   );
 };
@@ -118,9 +120,9 @@ export function MyMarkdownPreview({ source }: { source: string }) {
   const options = { code: CodeBlock, pre: Pre };
 
   return (
-    <article className="flex-1 w-full p-6 flex-wrap flex h-full overflow-y-auto">
+    <article className="w-full p-6 flex-wrap flex overflow-y-auto">
       <Markdown
-        className="prose prose-invert flex-wrap text-wrap w-full flex-1 break-words h-full"
+        className="prose prose-invert flex-wrap text-wrap w-full flex-1 break-words"
         components={options}
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[

@@ -60,9 +60,7 @@ export default function PostPage() {
       </div>
 
       {isLoading && <LoadingComponent />}
-      <div className="h-[400px]">
-        <MyMarkdownPreview source={post?.content ?? ""} />
-      </div>
+      <MyMarkdownPreview source={post?.content ?? ""} />
     </ContainterComponent>
   );
 }
