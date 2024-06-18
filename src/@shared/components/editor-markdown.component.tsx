@@ -27,7 +27,7 @@ export const EditorMarkdownComponent = ({
 
   return (
     <div className="flex-1 w-full flex h-96 gap-x-4">
-      <section className="flex flex-col min-w-[50%] flex-1 h-96">
+      <section className="flex flex-col w-[50%] flex-1 h-96">
         <Header
           feedElement={feedElement}
           toggleShowHeader={() => setShowMarkdownViewer(!showMarkdownViewer)}
@@ -43,7 +43,7 @@ export const EditorMarkdownComponent = ({
       </section>
 
       {showMarkdownViewer && (
-        <div className="h-96 overflow-y-auto">
+        <div className="w-[50%] h-96 overflow-y-auto">
           <MyMarkdownPreview source={source} />
         </div>
       )}
