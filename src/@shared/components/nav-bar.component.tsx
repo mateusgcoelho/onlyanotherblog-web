@@ -10,7 +10,7 @@ export default function NavBarComponent() {
   } = useContext(AuthContext);
 
   return (
-    <header className="bg-slate-950/85 z-10 backdrop-blur-[150px] py-4 m-auto max-w-screen-xl flex w-full items-center gap-x-10 border border-slate-800 px-10 shadow-sm shadow-blue-500/10 rounded-md">
+    <header className="bg-slate-950/75 z-10 backdrop-blur-[150px] py-4 m-auto max-w-screen-xl flex w-full items-center gap-x-10 border border-slate-800 px-10 shadow-sm shadow-blue-500/10 rounded-md">
       <h1 className="text-purple-300 font-bold text-2xl">
         <span className="text-purple-400">Only</span>Another
         <span className="text-purple-500">Blog</span>!
@@ -29,18 +29,16 @@ export default function NavBarComponent() {
             <p className="leading-normal">Recentes</p>
           </NavLink>
 
-          {user && (
-            <NavLink
-              to="/create-post"
-              className={({ isActive }) => {
-                return isActive
-                  ? "text-purple-500 underline"
-                  : "text-white hover:underline";
-              }}
-            >
-              <p className="leading-normal">Nova publicação</p>
-            </NavLink>
-          )}
+          <NavLink
+            to="/create-post"
+            className={({ isActive }) => {
+              return isActive
+                ? "text-purple-500 underline"
+                : "text-white hover:underline";
+            }}
+          >
+            <p className="leading-normal">Nova publicação</p>
+          </NavLink>
         </div>
 
         <div className="flex items-center gap-x-4">

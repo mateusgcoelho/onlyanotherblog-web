@@ -18,18 +18,21 @@ export default function FeedPage() {
   }, []);
 
   async function getPosts() {
-    setIsLoading(true);
-    await fakeDelay(200);
-    const response = await getPostsUseCase.execute();
-    if (response.isLeft()) {
-      toast.error(response.value.message, {
-        position: "bottom-right",
-      });
-      return;
-    }
+    try {
+      setIsLoading(true);
+      await fakeDelay(200);
+      const response = await getPostsUseCase.execute();
+      if (response.isLeft()) {
+        toast.error(response.value.message, {
+          position: "bottom-right",
+        });
+        return;
+      }
 
-    setPosts(response.value);
-    setIsLoading(false);
+      setPosts(response.value);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -41,10 +44,15 @@ export default function FeedPage() {
 
         <div className="flex flex-col gap-y-2 flex-1 pb-6 items-center">
           {isLoading && <LoadingComponent />}
+          {posts.length == 0 && !isLoading && (
+            <div className="h-full w-full flex items-center justify-center">
+              <p className="text-slate-500">Nenhuma postagem por aqui!</p>
+            </div>
+          )}
           {posts.map((post, i) => (
             <Link
               key={i}
-              className="border w-full rounded-md p-4 border-slate-800 cursor-pointer hover:bg-slate-900 transition-all"
+              className="border w-full rounded-md p-4 border-slate-800 cursor-pointer hover:bg-slate-950/40 transition-all"
               to={`/posts/${post.id}`}
             >
               <h1 className="text-sm font-semibold">

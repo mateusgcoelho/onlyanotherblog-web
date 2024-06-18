@@ -1,8 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { AuthContext } from "../../@core/presentation/contexts/auth.context";
+import { ButtonComponent } from "../../@shared/components/button.component";
 import { ContainterComponent } from "../../@shared/components/container.component";
 
 const userToSignInSchema = z.object({
@@ -16,6 +17,7 @@ const userToSignInSchema = z.object({
 type UserToSignInSchema = z.infer<typeof userToSignInSchema>;
 
 export default function SignInPage() {
+  const [isLoading, setIsLoading] = useState(false);
   const { signIn } = useContext(AuthContext);
 
   const {
@@ -27,7 +29,12 @@ export default function SignInPage() {
   });
 
   async function handleSignUp(data: UserToSignInSchema) {
-    await signIn(data);
+    try {
+      setIsLoading(true);
+      await signIn(data);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -71,9 +78,9 @@ export default function SignInPage() {
               <p className="text-red-500 text-xs">{errors.password?.message}</p>
             </div>
 
-            <button className="flex mt-10 items-center justify-center p-2 bg-purple-600 rounded-md text-sm">
+            <ButtonComponent isLoading={isLoading}>
               <p>Acessar</p>
-            </button>
+            </ButtonComponent>
           </form>
         </section>
       </ContainterComponent>

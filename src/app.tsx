@@ -35,8 +35,8 @@ export const App: React.FC = () => (
             )}
           />
           <Route path="/" element={<FeedPage />} />
+          <Route path="/:username" element={<UserFeedPage />} />
           <Route path="/posts/:id" element={<PostPage />} />
-          <Route path="/profile/:id" element={<UserFeedPage />} />
 
           <Route
             path="/signup"

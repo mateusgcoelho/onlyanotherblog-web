@@ -3,6 +3,7 @@ import { PostRepository } from "../data/repository/post.repository";
 import { IPostRepository } from "../domain/repository/post.repository";
 import { CreatePostUseCase } from "./use-cases/create-post.use-case";
 import { GetPostUseCase } from "./use-cases/get-post.use-case";
+import { GetPostsOfUserUseCase } from "./use-cases/get-posts-of-user.use-case";
 import { GetPostsUseCase } from "./use-cases/get-posts.use-case";
 
 export class PostFactory {
@@ -16,6 +17,10 @@ export class PostFactory {
 
   static factoryGetPostsUseCase(): GetPostsUseCase {
     return new GetPostsUseCase(this.postRepository);
+  }
+
+  static factoryGetPostsOfUserUseCase(): GetPostsOfUserUseCase {
+    return new GetPostsOfUserUseCase(this.postRepository);
   }
 
   static factoryGetPostUseCase(): GetPostUseCase {

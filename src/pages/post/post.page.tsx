@@ -12,7 +12,7 @@ export default function PostPage() {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [post, setPost] = useState<Post | undefined>();
-  let params = useParams();
+  const params = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,7 +22,6 @@ export default function PostPage() {
   async function getPostInfo() {
     setIsLoading(true);
     await fakeDelay(200);
-    console.log(params.id);
     const response = await getPostUseCase.execute(params.id!);
 
     if (response.isLeft()) {
@@ -38,7 +37,11 @@ export default function PostPage() {
     <ContainterComponent>
       <div className="flex flex-col">
         <Link
-          to={"/"}
+          to={".."}
+          onClick={(e) => {
+            e.preventDefault();
+            navigate(-1);
+          }}
           className="mb-2 text-purple-500 underline hover:text-purple-700 transition-all"
         >
           Voltar
@@ -47,8 +50,8 @@ export default function PostPage() {
         <h1 className="text-2xl font-bold">{post?.title}</h1>
         <p className="text-sm text-slate-500">
           <Link
-            to={"/"}
-            className="text-slate-500 underline hover:text-white transition-all"
+            to={`/${post?.username}`}
+            className="text-slate-500 underline hover:text-slate-800 transition-all"
           >
             {post?.username}
           </Link>
